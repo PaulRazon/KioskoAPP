@@ -15,7 +15,8 @@ export async function POST(req,res) {
     if(req.method==='POST'){
         const body = await req.json()
         const prisma = new PrismaClient();
-        const ordenes = prisma.orden.create({
+        
+        const ordenes = await prisma.orden.create({
             data:{
                 nombre:body.nombre,
                 total:body.total,
@@ -23,6 +24,7 @@ export async function POST(req,res) {
                 fecha:body.fecha
             }
         })
+        
         return NextResponse.json(ordenes)
     }else{
         return NextResponse.json({metodo:"GET!!"})
