@@ -1,10 +1,10 @@
 'use client'
 import {useCallback, useEffect} from 'react'
-import useQuiosco from '../../../hooks/useQuiosco';
-import { formatearDinero } from '../../../helpers';
+import useQuiosco from '../../../../hooks/useQuiosco';
+import { formatearDinero } from '../../../../helpers';
 import axios from 'axios';
 export default function Total() {
-  const{ pedido,nombre,setNombre,total }= useQuiosco()
+  const{ pedido,nombre,setNombre,total,colocarOrden }= useQuiosco()
 
   const comprobarPedido=useCallback(()=>{
     return (pedido.length===0 || nombre==='' || nombre.length<3)
@@ -15,22 +15,7 @@ export default function Total() {
     comprobarPedido()
   },[pedido,comprobarPedido])
 
-  const colocarOrden = async(e)=>{
-    e.preventDefault()
-    try {
-        const {data} = await axios({
-            method: "POST",
-            url: "/api/ordenes",
-            data: {pedido,nombre,total,fecha:Date.now().toString()},
-          }
-    
-        )
-        console.log(data)
-    } catch (error) {
-        console.log(error)
-    }
-    
-  }
+  
   return (
     <>
      <h1 className='text-4xl font-black'>Total</h1>

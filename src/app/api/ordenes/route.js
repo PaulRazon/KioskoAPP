@@ -1,10 +1,13 @@
 import { PrismaClient } from "@prisma/client"
-import { requestToBodyStream } from "next/dist/server/body-streams"
-import { NextRequest, NextResponse } from "next/server"
+import { NextResponse } from "next/server"
 
 export async function GET(){
     const prisma = new PrismaClient()
-    const ordenes = await prisma.orden.findMany()
+    const ordenes = await prisma.orden.findMany({
+        where:{
+            estado:false
+        }
+    })
     return NextResponse.json(
         ordenes
     )
@@ -26,6 +29,26 @@ export async function POST(req,res) {
         })
         
         return NextResponse.json(ordenes)
+    }else{
+        return NextResponse.json({metodo:"GET!!"})
+    }
+  }
+
+  export async function PUT(req,res) {
+    if(req.method==='PUT'){
+        const body = await req.json()
+        const prisma = new PrismaClient();
+        
+        const ordenActualizada = await prisma.orden.update({
+            where:{
+                id:parseInt(body.id)
+            },
+            data:{
+                estado:true
+            }
+        })
+        
+        return NextResponse.json(ordenActualizada)
     }else{
         return NextResponse.json({metodo:"GET!!"})
     }

@@ -2,9 +2,9 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import useQuiosco from "../hooks/useQuiosco"
 
 const pasos=[
-    {paso:1,nombre:'Menú', url:'/'},
-    {paso:2,nombre:'Resumen', url:'/resumen'},
-    {paso:3,nombre:'Datos y Total', url:'/total'}
+    {paso:1,nombre:'Menú', url:'/dashboard'},
+    {paso:2,nombre:'Resumen', url:'/dashboard/resumen'},
+    {paso:3,nombre:'Datos y Total', url:'/dashboard/total'}
 ]
 
 function Pasos() {

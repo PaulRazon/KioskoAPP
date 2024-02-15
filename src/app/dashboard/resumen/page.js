@@ -1,9 +1,9 @@
 'use client'
 import React from 'react'
-import useQuiosco from '../../../hooks/useQuiosco'
-import ResumenProducto from '../../../components/ResumenProducto'
+import useQuiosco from '../../../../hooks/useQuiosco'
+import ResumenProducto from '../../../../components/ResumenProducto'
 import Modal from "react-modal";
-import ModalProducto from '../../../components/ModalProducto';
+import ModalProducto from '../../../../components/ModalProducto';
 
 
 const customStyles = {

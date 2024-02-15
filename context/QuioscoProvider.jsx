@@ -12,17 +12,22 @@ const QuioscoProvider =({children})=>{
     const [modal,setModal] = useState(false)
     const [pedido,setPedido]=useState([])
     const [nombre,setNombre]=useState('')
+    const[ordenes,setOrdenes]=useState([])
     const [total,setTotal]=useState(0)    
-
     const router=useRouter()
 
 
+    const obtenerOrdenes =async()=>{
+        const {data} = await axios("/api/ordenes")
+        setOrdenes(data)
+    }
     const obtenerCategorias =async()=>{
         const {data} = await axios("/api/categorias")
         setCategorias(data)
     }
     useEffect(()=>{
         obtenerCategorias()
+        obtenerOrdenes()
     },[])
 
     useEffect(()=>{
@@ -36,7 +41,7 @@ const QuioscoProvider =({children})=>{
     const handleClickCategoria= id=>{
         const categoria = categorias.filter(c=> c.id === id)
         setCategoriaActual(categoria[0])
-        router.push('/')
+        router.push('/dashboard')
     }
 
     const handleSetProducto = producto=>{
@@ -74,7 +79,31 @@ const QuioscoProvider =({children})=>{
         setPedido(productoActualizar)
         
    }
-   
+   const colocarOrden = async(e)=>{
+    e.preventDefault()
+    try {
+        const {data} = await axios({
+            method: "POST",
+            url: "/api/ordenes",
+            data: {pedido,nombre,total,fecha:Date.now().toString()},
+          }
+    
+        )
+       
+        
+        setCategoriaActual(categorias[0])
+        setPedido([])
+        setNombre('')
+        setTotal(0)   
+        toast.success('Pedido Realizado Correctamente')
+        setTimeout(()=>{
+            router.push('/dashboard')
+        },300)
+    } catch (error) {
+        console.log(error)
+    }
+    
+  }
     return(
         <QuioscoContext.Provider
             value={{
@@ -88,11 +117,14 @@ const QuioscoProvider =({children})=>{
                 setProducto,
                 handleAgregarPedido,
                 pedido,
+                colocarOrden,
                 handleEditarCantidades,
                 handleEliminarProducto,
                 nombre,
                 setNombre,
-                total
+                total,
+                obtenerOrdenes,
+                ordenes
             }}
         >
             {children}      
